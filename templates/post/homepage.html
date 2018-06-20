@@ -1,0 +1,105 @@
+{% extends "base/base_insta.html" %}
+{% load static %}
+
+{% block content%}
+{{ block.super }}
+<body>
+    <div class="container img-container">
+            <div id="loadposts">
+
+            </div>
+    </div>
+</body>
+
+{% endblock %}
+
+{% block script %}
+{{ block.super }}  
+    <script type="text/javascript">
+            var start = 0;
+            function getPosts() {
+                    $.ajax({
+                        type: "GET",
+                        url: "ajax-photo-feed?&start="+start,
+                        processData: false,
+                        contentType: "application/json",
+                        data: '',
+                        success: function(r) {
+                                r = JSON.parse(r)
+                                for (var i = 0; i < r.length; i++) {
+                                        r[i].URL += '-/quality/lightest/'
+                                        $('#loadposts').append('<div class="img-div"><div class="header"><img class="img-circle" data-caption="'+r[i].Caption+'" src="'+r[i].ProfilePic+'"><a href="'+r[i].Owner+'"><label>'+r[i].Owner+' </label></a></div><a href="image/'+r[i].PostID+'"><img style="max-height: 500px; min-height: 300px; background-color: rgb('+r[i].MainColour+')" src="'+r[i].URL+'"></a><div class="header"><a href="javascript:void(0)" class="likephoto" data-liked='+ r[i].Liked +' data-postid="'+r[i].PostID+'" data-likes="'+r[i].Likes+'"><i class="fa fa-heart-o"></i></a></div><div class="more-section"><label id="like'+r[i].PostID+'">'+r[i].Likes+' Likes</label><p><strong>/'+r[i].Owner+' </strong>'+r[i].Caption+'</p></div></div>')
+                                }
+
+                                $('.likephoto').each(function() {
+                                        if ($(this).data('liked') == true) {
+                                                $(this).css('color', '#FF0000')
+                                                $('i', this).attr('class', 'fa fa-heart')
+                                        } else {
+                                                $(this).css('color', '#333')
+                                                $('i', this).attr('class', 'fa fa-heart-o')
+                                        }
+                                        $(this).off('click')
+                                        $(this).click(function() {
+                                                var but = $(this)
+                                                var buti = $('i', this)
+                                              
+                                                $.ajax({
+                                                    type: "GET",
+                                                    url: "ajax-like-photo?id="+$(this).data('postid'),
+                                                    processData: false,
+                                                    contentType: "application/json",
+                                                    data: '',
+                                                    success: function(r) {
+                                                            if (JSON.parse(r).Status == 'Success') {
+                                                                var like_count=parseInt(JSON.parse(r).likes);
+                                                                var pid=parseInt(JSON.parse(r).pid)
+                                                                if(like_count===1){$('#like'+pid).text(like_count+" Like");}
+                                                                else{$('#like'+pid).text(like_count+" Likes")}
+                                                                
+
+                                                        if (but.data('liked') == false) {
+                                                                but.data('liked',true)
+                                                                but.css('color', '#FF0000')
+                                                                buti.attr('class', 'fa fa-heart')
+                                                        } else {
+                                                                but.data('liked',false)
+                                                                but.css('color', '#333')
+                                                                buti.attr('class', 'fa fa-heart-o')
+                                                        }
+                                                    }
+                                                    },
+                                                    error: function(r) {
+
+                                                    }
+                                            })
+                                        })
+                                })
+                        },
+                        error: function(r) {
+
+                        }
+                });
+                start += 3;
+            }
+            $(document).ready(function() {
+                    $(window).scroll()
+                    getPosts()
+            })
+            var working = false;
+            $(window).scroll(function() {
+                 if ($(this).scrollTop() + 1 >= $('body').height() - $(window).height()) {
+                   if (working == false) {
+                           working = true;
+                   getPosts();
+               setTimeout(function() {
+                working = false;
+                }, 4000)
+                }
+           }
+           });
+
+    </script>
+{% endblock %}
+
+
