@@ -28,10 +28,10 @@ class Post(models.Model):
     tags = models.IntegerField(default=0)
     main_colour = models.CharField(max_length=15, default="")
 
-    def save(self):
+    def save_pic(self):
         self.save()
 
-    def delete(self):
+    def delete_pic(self):
         self.delete()
 
     def get_number_of_likes(self):
