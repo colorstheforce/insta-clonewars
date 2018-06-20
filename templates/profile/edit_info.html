@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% load static custom_tags %}
+
+{% block script %}
+{{ block.super }}
+<style>
+    .control-label{
+        font-size: 1.3em;
+        color: #337ab7;
+    }
+</style>
+{% endblock %}
+{% block content %}
+{{ block.super }}
+<body>
+        <div id="wrapper" style="margin: auto; max-width: 50em;">
+                <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+                   {% csrf_token %}
+                    <h3>Edit Info:</h3>
+                    <br>
+                   <div class="form-group">
+                       <label class="control-label col-xs-4" for="id_status">Status:</label>
+                       <div class="col-xs-8">
+                       <textarea id="id_status" maxlength="100" name="status" class="form-control" autofocus>{{ form.instance.status }}</textarea>
+                       </div>
+                   </div>
+                    <br>
+                    <br>
+                    <h3>Private Information:</h3>
+                    <br>
+                    <div class="form-group">
+                       <label class="control-label col-xs-4" for="id_secondary_email">Secondary email:</label>
+                       <div class="col-xs-8">
+                       <input id="id_secondary_email" maxlength="100" {% if form.instance.secondary_email %} value="{{ form.instance.secondary_email }}" {% endif %} name="secondary_email" type="email" class="form-control">
+                       </div>
+                    </div>
+                    <div class="form-group">
+                       <label class="control-label col-xs-4" for="id_phone_number">Mobile:</label>
+                       <div class="col-xs-8">
+                       <input id="id_phone_number" min="0000000000" max="9999999999" name="phone_number" {% if form.instance.phone_number %} value="{{ form.instance.phone_number }}" {% endif %} type="number" class="form-control">
+                    </div>
+                   </div>
+                    <br>
+                    <br>
+       
+                    <br>
+                   <button class="btn btn-lg btn-block btn-primary" type="submit">
+                       Update</button>
+                   </form>
+       </div>
+
+</body>
+
+{% endblock %}
