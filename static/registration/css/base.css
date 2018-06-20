@@ -1,0 +1,93 @@
+.img-container img{
+    width:100%;
+   }
+   
+   .img-container {
+    margin-bottom:40px;
+    border:1px solid #e8e6e6;
+   }
+   
+   .img-container .header {
+    width:100%;
+    height:50px;
+    position:relative;
+   }
+   
+   .img-container .header .img-circle {
+    width:35px;
+    height:35px;
+    margin:8px;
+   }
+   
+   .card-block .header a {
+    padding:15px 15px;
+    color:#322f30;
+    float:left;
+   }
+   
+   .card-block .header a i {
+    font-size:18px;
+   }
+   
+   @media (max-width:767px) {
+    .image-container {
+      margin-top:10px;
+      width:100% !important;
+    }
+   }
+   
+   .image-container {
+    margin-top:10px;
+    width:600px;
+    position:relative;
+    padding-left:0px;
+    padding-right:0px;
+   }.img-container img {
+ width:100%;
+}
+
+.image-container {
+ margin-bottom:40px;
+ border:1px solid #e8e6e6;
+}
+
+.image-container .header {
+ width:100%;
+ height:50px;
+ position:relative;
+}
+
+.card-block .header .img-circle {
+ width:35px;
+ height:35px;
+ margin:8px;
+}
+
+.card-block .header a {
+ padding:15px 15px;
+ color:#322f30;
+ float:left;
+}
+
+.card-block .header a i {
+ font-size:18px;
+}
+
+@media (max-width:767px) {
+ .image-container-container {
+   margin-top:10px;
+   width:100% !important;
+ }
+}
+
+.image-container {
+ margin-top:10px;
+ width:600px;
+ position:relative;
+ padding-left:0px;
+ padding-right:0px;
+}
+
+.comments p {
+  margin-bottom: 10px;
+}
