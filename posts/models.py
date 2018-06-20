@@ -29,10 +29,10 @@ class Post(models.Model):
     main_colour = models.CharField(max_length=15, default="")
 
     def save_pic(self):
-        self.save()
+        return self.save()
 
     def delete_pic(self):
-        self.delete()
+        return self.delete()
 
     def get_number_of_likes(self):
         thelikes=PhotoLikes.objects.filter(postid=self.id).all()
