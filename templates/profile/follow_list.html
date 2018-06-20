@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+
+{% load static custom_tags %}
+
+{% block content%}
+{{ block.super }}
+<body>
+    <div class="follow__wrapper row">
+        <div class="follow__heading">
+          {{ header }}
+        </div>
+        {% for profile in profiles %}
+          <div class="follow__card" id="{{ profile.pk }}">
+            {% if profile.userprofiledata.avatar %}
+              <img class="picture-circle--small" src="{{ profile.userprofiledata.avatar }}">
+            {% else %}
+              <img class="picture-circle--small" src="https://imgur.com/jVr43h8.png">
+            {% endif %}
+            <a href="{% url 'userprofile:see_user' user_username=profile %}">{{ profile }}</a>
+      
+            {% comment %} {% if request.user.is_authenticated and profile.userprofiledata != request.user.userprofiledata %}
+              <div class="follow-toggle__container">
+                {% is_following request.user.userprofiledata profile.userprofiledata as following %}
+                <button class="btn btn-primary {% if not following %}follow-user{% else %}unfollow-user{% endif %}">
+                  {% if not following %}
+                    Follow
+                  {% else %}
+                    Following
+                  {% endif %}
+                </button>
+              </div>
+            {% endif %} {% endcomment %}
+          </div>
+        {% endfor %}
+      </div>
+</body>
+
+{% endblock %}
