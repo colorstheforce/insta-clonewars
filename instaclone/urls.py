@@ -17,7 +17,7 @@ from django.contrib import admin
 # from django.urls import path,re_path
 from django.conf.urls import url, include
 from django.conf.urls.static import static
-
+from instaclone import settings
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
