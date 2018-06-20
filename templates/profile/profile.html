@@ -1,0 +1,257 @@
+
+{% extends 'base/base.html' %}
+
+{% load static custom_tags %}
+{% block content%}
+{{ block.super }}
+<body>
+    <div class="photo-viewer">
+                <div class="img-div">
+
+                        <div class="header">
+                                {% if profile.avatar %}
+                                <img class="img-circle" src="{{ profile.avatar }}">
+                                {% else %}
+                                <img class="img-circle" src="https://imgur.com/jVr43h8.png">
+                                {% endif %}
+                                <label>{{profile.user.username}}</label>
+                        </div>
+                        
+                        <img style="max-height: 500px" id="detailphoto" src="">
+
+                        <div class="header">
+                                <a id="likephoto" href="javascript:void(0)" data-postid="">
+                                    <i class="fa fa-heart-o"></i>
+                                </a>
+                        </div>
+
+                        <div class="more-section">
+                            <label><span id="likes"></span> Likes</label>
+                            <p><strong>{{profile.user.username}} </strong><span id="cap"></span></p>
+                        </div>
+                </div>
+        </div>
+
+
+    <div class="profile" style="background:#ffffff;">
+            <div class="profile__head">
+              <div class="row">
+                <div class="col-xs-4 left">
+                    {% if request.user == user %}
+                  {% if profile.avatar %}
+                    <img class="picture-circle" id="profilepic" src="{{ profile.avatar}}">
+                  {% else %}
+                    <img class="picture-circle" id="profilepic" src="https://imgur.com/jVr43h8.png">
+                  {% endif %}
+                  {% else %}
+                  {% if profile.avatar %}
+                  <img class="picture-circle"  src="{{ profile.avatar}}">
+                {% else %}
+                  <img class="picture-circle"  src="https://imgur.com/jVr43h8.png">
+                {% endif %}
+                {% endif %}
+
+                </div>
+                <div class="col-xs-8 right">
+                  <div class="name-buttons">
+                    <h1 class="username">
+                        <strong style="text-transform: capitalize;"> {{ profile.user.first_name }} {{ profile.user.last_name }}
+                        </strong>
+                        (@ {{ profile.user.username }})
+                    </h1>
+                    {% if request.user == user %}
+                      <a class="edit-desktop" href="{% url 'userprofile:edit_info' %}">
+                        <button class="edit-profile"><strong>EDIT-PROFILE</strong></button>
+                      </a>
+                      <div class="options-bubbles" type="button" data-toggle="modal" data-target="#logoutModal">
+                        <p class="bubble"></p>
+                        <p class="bubble"></p>
+                        <p class="bubble"></p>
+                      </div>
+                    {% elif request.user.is_authenticated %}
+                    <div class="follow-toggle__container">
+                      {% is_following request.user.userprofiledata profile as following %}
+                      <button class="btn btn-primary {% if not following %}follow-user{% else %}unfollow-user{% endif %}" id="{{ profile.pk }}">
+                        
+                        {% if not following %}
+                          Follow
+                        {% else %}
+                          Following
+                        {% endif %}
+                      </button>
+                    </div>
+                    {% endif %}
+                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <ul>
+                            <li><a type="button" class="btn" href="/accounts/password/reset/">Change Password</a></li>
+                            <li><a type="button" class="btn" href="/logout">Logout</a></li>
+                            <li><a type="button" class="btn" data-dismiss="modal">Cancel</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% if request.user == user %}
+                    <a class="edit-mobile" href="{% url 'userprofile:edit_info' %}">
+                      <button class="edit-profile">Edit Profile</button>
+                    </a>
+                  {% endif %}
+                  <div class="desktop-block">
+                    <ul class="stats">
+                        <li class="stats__count"><span>{{ user.post_set.count }}</span> Posts</li>
+                        <a href="{% url 'userprofile:followers' username=profile.user.username %}"><li class="stats__count"><span>{{ profile.get_number_of_followers }}</span> Followers</li></a>
+                        <a href="{% url 'userprofile:following' username=profile.user.username %}"><li class="stats__count"><span>{{ profile.get_number_of_following }}</span> Following</li></a>
+                    </ul>
+                    <div class="description">
+                      <p>{% if profile.status %}{{ profile.status }}{% endif %}</p>
+              
+                    </div>
+                  </div>
+                </div>
+                <div class="mobile-block">
+                  <div class="description">
+                    <p>{% if profile.status %}{{ profile.status }}{% endif %}</p>
+                  </div>
+                  <ul class="stats">
+                      <div class="col-xs-4"><li class="stats__count"><span>{{ user.post_set.count }}</span><br> posts</li></div>
+                      <div class="col-xs-4"><a href="{% url 'userprofile:followers' username=profile.user.username %}"><li class="stats__count"><span>{{ profile.get_number_of_followers }}</span><br> followers</li></a></div>
+                      <div class="col-xs-4"><a href="{% url 'userprofile:following' username=profile.user.username %}"><li class="stats__count"><span>{{ profile.get_number_of_following }}</span><br> following</li></a></div>
+                  </ul>
+          
+          
+                </div>
+              </div>
+            </div>
+          
+          </div>
+
+          <div class="container">
+                <div class="col-md-12 profile-imgs">
+                    <div id="loadposts">
+                    </div>
+                </div>
+            </div>
+
+</body>
+{% endblock %}
+
+{% block script %}
+{{ block.super }} 
+
+    <script type="text/javascript">
+    $('#follow').click(function() {
+            $.ajax({
+                type: "GET",
+                url: "/ajax-follow?user={{profile.user.username}}",
+                processData: false,
+                contentType: "application/json",
+                data: '',
+                success: function(r) {
+                        if (JSON.parse(r).Following == true) {
+                                $('#follow').html("Unfollow")
+                        } else {
+                                $('#follow').html("Follow")
+                        }
+                },
+                error: function(r) {
+                }
+        });
+});
+            var start = 0;
+            function getPosts() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/ajax-profile-feed?username={{profile.user.username}}&start="+start,
+                        processData: false,
+                        contentType: "application/json",
+                        data: '',
+                        success: function(r) {
+                                r = JSON.parse(r)
+                                for (var i = 0; i < r.length; i++) {
+                                        r[i].URL += '-/quality/lightest/'
+                                        $('#loadposts').append('<div class="photo" data-liked='+ r[i].Liked +' data-postid="'+r[i].PostID+'" data-likes="'+r[i].Likes+'" data-caption="'+r[i].Caption+'" style="background-color: rgb('+ r[i].MainColour +'); background-image:url('+r[i].URL+')"></div>')
+                                }
+                                $('.photo').each(function() {
+                                        $(this).off('click')
+                                        $(this).click(function() {
+                                                $('#cap').html($(this).data('caption'))
+                                                $('#likephoto').data('postid', $(this).data('postid'))
+                                                if ($(this).data('caption') == "") {
+                                                        $('#cap').html("")
+                                                }
+                                                $('#likes').html($(this).data('likes'))
+                                                if ($(this).data('liked') == true) {
+                                                        $('#likephoto').css('color', '#FF0000')
+                                                        $('#likephoto i').attr('class', 'fa fa-heart')
+                                                } else {
+                                                        $('#likephoto').css('color', '#333')
+                                                        $('#likephoto i').attr('class', 'fa fa-heart-o')
+                                                }
+                                                var s = $(this).css('background-image').split("url(\"")[1]
+                                                var tmpImg = new Image() ;
+                                                tmpImg.src = s.slice(0, s.length-21);
+                                                tmpImg.onload = function() {
+                                                $('#detailphoto').attr('src', tmpImg.src)
+                                                $('.photo-viewer').show()
+                                                $('#upload-div').hide()
+                                                $('.overlay').fadeToggle('fast')
+                                                $('body').css('overflow', 'hidden')
+                                                } ;
+                                })
+                                })
+                        },
+                        error: function(r) {
+                        }
+                });
+                start += 3;
+            }
+            $(document).ready(function() {
+                    $(window).scroll()
+                    getPosts()
+            })
+            $('#likephoto').click(function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/ajax-like-photo?id="+$('#likephoto').data('postid'),
+                        processData: false,
+                        contentType: "application/json",
+                        data: '',
+                        success: function(r) {
+                                  if (JSON.parse(r).Status == 'Success') {
+                                        var like_count=parseInt(JSON.parse(r).likes);
+                                        var pid=parseInt(JSON.parse(r).pid)
+                                    $('[data-postid]').each(function() {
+                                            if ($(this).data('postid') == $('#likephoto').data('postid')) {
+                                                    if ($(this).data('liked') == false) {
+                                                            $(this).data('liked',true)
+                                                            $('#likephoto').css('color', '#FF0000')
+                                                            $('#likephoto i').attr('class', 'fa fa-heart')
+                                                    } else {
+                                                            $(this).data('liked',false)
+                                                            $('#likephoto').css('color', '#333')
+                                                            $('#likephoto i').attr('class', 'fa fa-heart-o')
+                                                    }
+                                            }
+                                    })
+                                }
+                        },
+                        error: function(r) {
+                        }
+                })
+            })
+            var working = false;
+            $(window).scroll(function() {
+                 if ($(this).scrollTop() + 1 >= $('body').height() - $(window).height()) {
+                   if (working == false) {
+                           working = true;
+                   getPosts();
+               setTimeout(function() {
+                working = false;
+                }, 4000)
+                }
+           }
+           });
+    </script>
+  {% endblock %}
