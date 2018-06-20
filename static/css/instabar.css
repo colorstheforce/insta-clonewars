@@ -1,0 +1,142 @@
+#navMain {
+  font-family: 'Raleway';
+  font-size: 20px;
+  /* text-transform: uppercase; */
+  background: #222;
+}
+
+#navMain .navbar-toggler {
+  font-size: 16px;
+  padding: 11px;
+  color: rgb(0, 0, 0);
+}
+
+#navMain a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+#navMain .navbar-nav .nav-item:active,
+#navMain .navbar-nav .nav-item:focus {
+  outline: none;
+  background-color: rgb(240, 120, 120);
+}
+
+@media (min-width: 992px) {
+  #navMain {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      -webkit-transition: padding-top 0.5s ease-in-out, padding-bottom 0.5s;
+      -moz-transition: padding-top 0.5s ease-in-out, padding-bottom 0.5s;
+      transition: padding-top 0.5s ease-in-out, padding-bottom 0.5s;
+      letter-spacing: 1px;
+      background: rgb(255, 255, 255);
+      border-bottom: 1px solid #e6e6e6;
+      /* height: 70px; */
+  }
+  #navMain .nav-link.active {
+      outline: none;
+      background-color: rgb(255, 255, 255);
+  }
+  #navMain .nav-link.active:hover {
+      color: white;
+      background-color: rgba(230, 210, 97, 0.637)
+  }
+  #navMain.navbar-shrink {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background: rgb(255, 255, 255);
+      border-bottom: 1px solid #e6e6e6;
+  }
+  #navMain.navbar-shrink a {
+      color: rgba(0, 0, 0, 0.973);
+  }
+}
+
+.nav-search {
+  display: flex;
+  justify-content: center;
+}
+
+
+#nav-container {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #e3e3e3;
+  margin-bottom: 70px;
+  background: white;
+}
+
+#navbar {
+  min-width: 500px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 25px 0 25px 0;
+}
+
+#left {
+    float: left;
+    width: 200px;
+    height: 20px;
+}
+
+#center {
+    display: inline-block;
+    margin: 0 auto;
+    min-width: 600px;
+}
+
+#right {
+    float: right;
+    width: 200px;
+    height: 20px;
+}
+
+#input-field {
+  width: 200px;
+  border-radius: 3px;
+  border: 1px solid #cccccc;
+  height: 25px;
+  padding-left: 5px;
+ 
+}
+
+/* ::-webkit-input-placeholder input-field{
+   text-align: center;
+} */
+
+#logo-icon {
+  width: 30px;
+  padding-right: 20px;
+  padding-top: 3px;
+  border-right: 1px solid black;
+  float: left;
+}
+
+#logo-name {
+  float: left;
+  width: 120px;
+  padding-left: 15px;
+}
+
+.nav-icon {
+  float: right;
+  width: 26px;
+  padding: 0 15px 0 15px;
+}
+
+.header {
+  width: 600px;
+  height: 55px;
+  margin: 0 auto;
+  border: 1px solid #efefef;
+  border-radius: 3px 3px 0 0;
+  background: white;
+}
+
+
+
+
+
+
+
