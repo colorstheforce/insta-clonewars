@@ -18,12 +18,15 @@ from django.contrib import admin
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from instaclone import settings
+from register.views import acme_challenge
 urlpatterns = [
+    # url(r'^\.well-known/', include('letsencrypt.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^',include('register.urls')),
     url(r'^',include('posts.urls')),
     url(r'^', include('userprofile.urls')),
+    url(r'^.well-known/acme-challenge/.*$',acme_challenge, name='acme-challenge'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
