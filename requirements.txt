@@ -4,6 +4,7 @@ Django==1.11
 django-activity-stream==0.6.5
 django-bootstrap4==0.0.6
 django-crispy-forms==1.6.1
+django-letsencrypt==3.0.1
 django-registration==2.2
 gunicorn==19.8.1
 psycopg2-binary==2.7.4
