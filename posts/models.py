@@ -42,7 +42,7 @@ class Post(models.Model):
         return self.comment_set.count()
 
     def __str__(self):
-        return self.title
+        return self.url
 
 class Comments(models.Model):
     comment = models.TextField()
