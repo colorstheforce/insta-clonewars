@@ -43,6 +43,8 @@ if MODE=="dev":
         
     }
     SECURE_SSL_REDIRECT=False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
 else:
     # production
     DATABASES = {
@@ -51,6 +53,8 @@ else:
         )
     }
     SECURE_SSL_REDIRECT=config('SECURE_SSL_REDIRECT', cast=bool)
+    SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', cast=bool)
+    CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', cast=bool)
     
 
 db_from_env = dj_database_url.config(conn_max_age=500)
