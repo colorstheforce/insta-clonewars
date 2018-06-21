@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from userprofile.models import UserProfileData
 from django.core.exceptions import ObjectDoesNotExist
 
+from instaclone import settings
 @login_required(login_url='/accounts/login/')
 def index(request):
     if request.user.is_authenticated:
