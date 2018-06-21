@@ -25,7 +25,7 @@ EMAIL_PORT=config("EMAIL_PORT", cast=int)
 MODE=config("MODE", default="dev")
 SECRET_KEY = config('SECRET_KEY')
 ACME_CHALLENGE_CONTENT = config('ACME_CHALLENGE_CONTENT')
-
+SECURE_SSL_REDIRECT=config('SECURE_SSL_REDIRECT', cast=bool)
 # DEBUG = True
 DEBUG = config('DEBUG', default=False, cast=bool)
 
