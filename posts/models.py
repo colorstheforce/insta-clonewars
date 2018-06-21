@@ -3,8 +3,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class PhotoLikes(models.Model):
-	postid = models.IntegerField()
-	liker = models.CharField(max_length=20)
+    postid = models.IntegerField()
+    liker = models.CharField(max_length=20)
+
+    def get_user(self):
+        return User.objects.filter(username=self.liker)[0]
+        
+    def __str__(self):
+        return 'liker:{}'.format(self.liker)
 
 
 class PhotoTag(models.Model):
