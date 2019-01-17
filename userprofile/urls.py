@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^(?P<username>\w+)/followers/$', views.followers, name='followers'),
     url(r'^(?P<username>\w+)/following/$', views.following, name='following'),
     
-    url(r'^(?P<user_username>\w+)/$', views.profile, name='see_user'),
+    url(r'^(?P<user_username>.+)/$', views.profile, name='see_user'),
 
     url(r'^profile$', views.profile, name="profile"),
 
